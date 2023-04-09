@@ -19,6 +19,13 @@
                 <li>View Cart</li>
             </ul>
         </nav>
+        <% if(loggedUser != null){%>
+            Logged user: <a href="/user"><%= loggedUserLogin %></a>
+            <a href="/user/logout">Logout</a>
+        <%}else{%>
+            <a href="/user/login">Login</a>
+            <a href="/user/register">Register</a>
+        <%}%>
     </header>
     <br/>
     <%- include('./../partials/errorMessage.ejs') %>

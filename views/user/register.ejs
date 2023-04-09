@@ -1,0 +1,23 @@
+<form method="POST" action="/user/register">
+    <h1>Register:</h1>
+    <label>Login</label>
+    <input type="text" name="login" required value="<%= user.login%>"/><br/>
+    <label>Password</label>
+    <input type="password" name="password" required/><br/>
+    <label>Repeat password</label>
+    <input type="password" name="passwordRepeat" required/><br/>
+    <label>Email</label>
+    <input type="text" name="email" required value="<%= user.email%>"/><br/>
+    <h4>Address:</h4>
+    <label>Street name</label>
+    <input type="text" name="street" required value="<%= user.address.street%>"/><br/>
+    <label>House number</label>
+    <input type="text" name="houseNumber" required value="<%= user.address.houseNumber%>"/><br/>
+    <label>City</label>
+    <input type="text" name="city" required value="<%= user.address.city%>"/><br/>
+    <label>Postal code</label>
+    <input type="text" name="postalCode" required value="<%= user.address.postalCode%>"/><br/>
+    <label>Country</label>
+    <input type="text" name="country" required value="<%= user.address.country%>"/><br/>
+    <input type="submit" value="Register"/>
+</form>
