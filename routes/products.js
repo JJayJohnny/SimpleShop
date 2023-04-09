@@ -51,8 +51,12 @@ router.post('/', upload.array('photos'), async (req, res) => {
 router.get('/addToCart', (req, res) => {
     id=req.query.id
     if(req.session.cart == null)
-        req.session.cart = new Array
-    req.session.cart.push(id)
+        req.session.cart = new Object()
+    if(parseInt(req.query.numberOfItems) > parseInt(req.query.maxNumberOfItems)){
+        res.redirect(`/products/${id}`, {errorMessage: "Too many items selected"})
+    }
+    req.session.cart[id]=parseInt(req.query.numberOfItems)
+    console.log(req.session.cart)
     res.redirect(`/products/${id}`)
 })
 

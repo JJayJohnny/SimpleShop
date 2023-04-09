@@ -1,6 +1,10 @@
 <% items.forEach(item => { %>
     <div class="cartItem">
-        <%= item.name %>
+        <a href="/products/<%= item.id%>"><%= item.name %></a>
+        <%= cart[item.id] %>
         <a href="/cart/remove?id=<%= item.id %>">X</a>
     </div>
 <% }); %>
+<% if(items.length == 0) {%>
+    Cart is empty
+<%}%>

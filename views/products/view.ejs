@@ -24,5 +24,10 @@
     Opis: <%= product.description %><br/>
     Cena: <%= product.price %><br/>
     Ilość: <%= product.quantity %><br/>
-    <a href="/products/addToCart?id=<%= product.id %>">Do koszyka</a>
+    <form action="/products/addToCart" method="GET">
+        <input type="hidden" name="id" value="<%= product.id %>"/>
+        <input type="number" min="1" max="<%= product.quantity%>" name="numberOfItems" value="1"/>
+        <input type="hidden" name="maxNumberOfItems" value="<%= product.quantity%>"/>
+        <input type="submit" value="Submit"/>
+    </form>
 </div>
