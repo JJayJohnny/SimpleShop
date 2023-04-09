@@ -1,0 +1,6 @@
+<% items.forEach(item => { %>
+    <div class="cartItem">
+        <%= item.name %>
+        <a href="/cart/remove?id=<%= item.id %>">X</a>
+    </div>
+<% }); %>

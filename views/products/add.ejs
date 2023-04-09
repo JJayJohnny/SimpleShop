@@ -1,0 +1,12 @@
+<form action="/products" method="POST" enctype="multipart/form-data">
+    <label>Name</label>
+    <input type="text" name="name" value="<%= product.title %>"/><br/>
+    <label>Description</label>
+    <textarea name="description"><%= product.description %></textarea><br/>
+    <label>Price</label>
+    <input type="text" name="price" value="<%= product.price %>"/><br/>
+    <label>Quantity</label>
+    <input type="text" name="quantity" value="<%= product.quantity %>"/><br/>
+    <input type="file" name="photos" multiple/>
+    <input type="submit" value="Add"/>
+</form>

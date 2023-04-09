@@ -1,0 +1,11 @@
+.productImage{
+    display: none;
+}
+
+.photoControl{
+    cursor: pointer;
+}
+
+.photoControl:hover{
+    background-color: lightgray;
+}

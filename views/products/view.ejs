@@ -1,0 +1,28 @@
+<script src="/script.js"></script>
+<h2><%= product.name%></h2>
+<div class="productLeft" style="float: left;">
+    <% product.imageNames.forEach(imageName => {%> 
+    <img width="500" src="/../uploads/productImages/<%= imageName%>" class="productImage"/>
+    <%});%>
+    <div id="imageControlButtons">
+        <div class="photoControl" style="float: left;" onclick="showImage(currentImage-1)">&lt;</div>
+        <div class="photoControl" style="float: right;" onclick="showImage(currentImage + 1)">&gt;</div>
+    </div>
+</div>
+<script>
+    var currentImage=0;
+    var allPhotos = document.getElementsByClassName("productImage");
+    var firstImage=allPhotos[0];
+    firstImage.style="display: block;"
+    if(allPhotos.length < 2){
+        var buttons = document.getElementsByClassName("photoControl");
+        for(var i=0; i<buttons.length; i++)
+            buttons[i].style="display: none;"
+    }
+</script>
+<div class="productRight">
+    Opis: <%= product.description %><br/>
+    Cena: <%= product.price %><br/>
+    Ilość: <%= product.quantity %><br/>
+    <a href="/products/addToCart?id=<%= product.id %>">Do koszyka</a>
+</div>
