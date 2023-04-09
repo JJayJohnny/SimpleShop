@@ -50,8 +50,20 @@ router.post('/register', async (req, res) => {
             country: req.body.country
         })
     })
-    if(req.body.password != req.body.passwordRepeat)
+    let sameLogin = await User.findOne({'login': user.login}).exec()
+    if(sameLogin != null){
+        res.render('user/register', {user: user, errorMessage: "User with this login already exists"})
+        return
+    }
+    let sameEmail = await User.findOne({'email': user.email}).exec()
+    if(sameEmail != null){
+        res.render('user/register', {user: user, errorMessage: "User with this email already exists"})
+        return
+    }
+    if(req.body.password != req.body.passwordRepeat){
         res.render('user/register', {user: user, errorMessage: "Passwords are not the same"})
+        return
+    }
     let hash = await bcrypt.hash(req.body.password, 10)
     user.password=hash
     

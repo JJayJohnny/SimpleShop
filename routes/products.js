@@ -56,7 +56,6 @@ router.get('/addToCart', (req, res) => {
         res.redirect(`/products/${id}`, {errorMessage: "Too many items selected"})
     }
     req.session.cart[id]=parseInt(req.query.numberOfItems)
-    console.log(req.session.cart)
     res.redirect(`/products/${id}`)
 })
 

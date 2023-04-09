@@ -5,11 +5,9 @@ const Product = require('./../models/product')
 router.get('/', async (req, res) => {
     try{
     let items = await Product.find().where('_id').in(Object.keys(req.session.cart)).exec()
-    console.log(items)
     res.render('cart', {items: items, cart: req.session.cart})
     }
     catch(error){
-        console.log(error)
         res.render('cart', {items: new Array, cart: new Object()})
     }
 })
