@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index')
 const productsRouter = require('./routes/products')
 const cartRouter = require('./routes/cart')
 const userRouter = require('./routes/user')
+const orderRouter = require('./routes/order')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname+'/views')
@@ -40,6 +41,7 @@ app.use('/', indexRouter)
 app.use('/products', productsRouter)
 app.use('/cart', cartRouter)
 app.use('/user', userRouter)
+app.use('/order', orderRouter)
 
 
 app.listen(process.env.PORT || 3000)

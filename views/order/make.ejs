@@ -1,0 +1,37 @@
+<table>
+<tr>
+    <td>Name</td>
+    <td>Quantity</td>
+    <td>Price</td>
+</tr>
+<% var totalPrice = 0 %>
+<% items.forEach(item => {%>
+    <% totalPrice+= item.price*cart[item.id] %>
+    <tr>
+        <td><%=item.name%></td>
+        <td><%=cart[item.id]%></td>
+        <td><%=item.price%></td>
+    </tr>
+<%});%>
+<tr><td>Total: <%=totalPrice.toFixed(2)%></td></tr>
+</table>
+
+<h3>Shipment info</h3>
+<form method="POST" action="/order/make">
+    <label>Name</label>
+    <input type="text" name="name" required value="<%= customerName%>"/><br/>
+    <label>Email</label>
+    <input type="text" name="email" required value="<%= email%>"/><br/>
+    <h4>Address:</h4>
+    <label>Street name</label>
+    <input type="text" name="street" required value="<%= address.street%>"/><br/>
+    <label>House number</label>
+    <input type="text" name="houseNumber" required value="<%= address.houseNumber%>"/><br/>
+    <label>City</label>
+    <input type="text" name="city" required value="<%= address.city%>"/><br/>
+    <label>Postal code</label>
+    <input type="text" name="postalCode" required value="<%= address.postalCode%>"/><br/>
+    <label>Country</label>
+    <input type="text" name="country" required value="<%= address.country%>"/><br/>
+    <input type="submit" value="Make order"/>
+</form>
