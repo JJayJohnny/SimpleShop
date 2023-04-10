@@ -51,6 +51,7 @@ router.get('/register', (req, res) => {
 router.post('/register', async (req, res) => {
     let user = new User({
         login: req.body.login,
+        name: req.body.name,
         email: req.body.email,
         address: new Address({
             street: req.body.street,
@@ -115,6 +116,7 @@ router.post('/edit', async (req, res) => {
     try{
         var updated = await User.findByIdAndUpdate(req.session.loggedUser, {
             email: req.body.email,
+            name: req.body.name,
             address: newAddress
         })
         res.redirect('/user')

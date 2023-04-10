@@ -1,4 +1,6 @@
 <form method="POST" action="/user/edit">
+    <label>Name</label>
+    <input type="text" name="name" required value="<%= user.name%>"/><br/>
     <label>Email</label>
     <input type="text" name="email" required value="<%= user.email%>"/><br/>
     <h4>Address:</h4>
