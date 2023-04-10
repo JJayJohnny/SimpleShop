@@ -1,1 +1,13 @@
 <h1>Hello <%=user.login%>!</h1>
+<div class="accountInfo">
+    <h4>Account info:</h4>
+    <a href="/user/changePassword">Change your password</a><br/>
+    <label>Email: <%=user.email%></label><br/>
+    <label>Address:</label><br/>
+    <label>Street: <%=user.address.street%></label><br/>
+    <label>House number: <%=user.address.houseNumber%></label><br/>
+    <label>City: <%=user.address.city%></label><br/>
+    <label>Postal code: <%=user.address.postalCode%></label><br/>
+    <label>Country: <%=user.address.country%></label><br/>
+    <a href="/user/edit">Change your info</a>
+</div>

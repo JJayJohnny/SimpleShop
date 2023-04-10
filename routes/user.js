@@ -6,8 +6,10 @@ const bcrypt = require('bcrypt')
 
 //logged user page
 router.get('/', async (req, res) => {    
-    if(req.session.loggedUser == null)
+    if(req.session.loggedUser == null){
         res.redirect('/');
+        return
+    }
     var user = await User.findById(req.session.loggedUser).exec()
     res.render('user/user', {user: user})
 })
@@ -92,6 +94,54 @@ router.post('/register', async (req, res) => {
 router.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
+})
+
+router.get('/edit', async (req, res) => {
+    if(req.session.loggedUser == null){
+        res.redirect('/')
+        return
+    }
+    var user = await User.findById(req.session.loggedUser).exec()
+    res.render('user/edit', {user: user})
+})
+router.post('/edit', async (req, res) => {
+    let newAddress = Address({
+        street: req.body.street,
+        houseNumber: req.body.houseNumber,
+        city: req.body.city,
+        postalCode: req.body.postalCode,
+        country: req.body.country
+    })
+    try{
+        var updated = await User.findByIdAndUpdate(req.session.loggedUser, {
+            email: req.body.email,
+            address: newAddress
+        })
+        res.redirect('/user')
+    }catch{
+        res.redirect('/user/edit')
+    }
+})
+
+router.get('/changePassword', (req, res) => {
+    if(req.session.loggedUser == null){
+        res.redirect('/')
+        return
+    }
+    res.render('user/changePassword')
+})
+router.post('/changePassword', async (req, res) => {
+    if(req.body.password != req.body.passwordRepeat){
+        res.render('user/changePassword', {errorMessage: "Passwords are not the same"})
+        return
+    }
+    let hash = await bcrypt.hash(req.body.password, 10)
+    try{
+        let changedUser = await User.findByIdAndUpdate(req.session.loggedUser, {password: hash})
+        res.redirect('/user')
+    }catch{
+        res.render('user/changePassword', {errorMessage: "Error saving, please try again"})
+    }
 })
 
 module.exports = router
