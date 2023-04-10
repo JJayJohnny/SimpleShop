@@ -13,6 +13,10 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
+    if(req.session.loggedUser != null){
+        res.redirect('/user')
+        return
+    }
     res.render('user/login')
 })
 router.post('/login', async (req, res) =>{
@@ -36,6 +40,10 @@ router.post('/login', async (req, res) =>{
 })
 
 router.get('/register', (req, res) => {
+    if(req.session.loggedUser != null){
+        res.redirect('/user')
+        return
+    }
     res.render('user/register', {user: new User({address: new Address()})})
 })
 router.post('/register', async (req, res) => {

@@ -1,10 +1,13 @@
+<% var totalPrice = 0 %>
 <% items.forEach(item => { %>
+    <% totalPrice+= item.price*cart[item.id] %>
     <div class="cartItem">
         <a href="/products/<%= item.id%>"><%= item.name %></a>
-        <%= cart[item.id] %>
+        <%= cart[item.id] %> * <%= item.price%>
         <a href="/cart/remove?id=<%= item.id %>">X</a>
     </div>
 <% }); %>
+<div class="cartItem">Total: <%= totalPrice.toFixed(2) %></div>
 <% if(items.length == 0) {%>
     Cart is empty
 <%}%>
