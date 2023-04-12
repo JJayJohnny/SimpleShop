@@ -4,6 +4,7 @@ const Order = require('./../models/order')
 const Product = require('./../models/product')
 const Address = require('./../models/user').Address
 const User = require('./../models/user').User
+const {body, validationResult} = require('express-validator')
 
 router.get('/', (req, res) => {
     res.redirect('/')
@@ -25,7 +26,8 @@ router.get('/make', async (req, res) => {
         res.redirect('/')
     }   
 })
-router.post('/make', async (req, res) => {
+router.post('/make', body(['name', 'street', 'houseNumber', 'city', 'country', 'postalCode']).escape(), body('email').isEmail().normalizeEmail(), async (req, res) => {
+    let items = await Product.find().where('_id').in(Object.keys(req.session.cart)).exec()
     let order = new Order({
         status: "Ordered",
         customerName: req.body.name,
@@ -38,7 +40,10 @@ router.post('/make', async (req, res) => {
             country: req.body.country
         })
     })
-    let items = await Product.find().where('_id').in(Object.keys(req.session.cart)).exec()
+    if(!validationResult(req).isEmpty()){
+        res.render('order/make', {cart: req.session.cart, items: items, customerName: order.customerName, address: order.address, email: order.email, errorMessage: validationResult(req).array()[0]['msg']+": "+validationResult(req).array()[0]['param']})
+        return
+    }  
     items.forEach(item => {
         if(item.quantity < req.session.cart[item.id]){
             res.render('order/make', {cart: req.session.cart, items: items, customerName: order.customerName, address: order.address, email: order.email, errorMessage: "Chosen amount of at least one item excedes available quantity"})

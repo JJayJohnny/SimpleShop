@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require('./../models/user').User
 const Address = require('./../models/user').Address
 const bcrypt = require('bcrypt')
+const {body, validationResult} = require('express-validator')
 
 //logged user page
 router.get('/', async (req, res) => {    
@@ -21,7 +22,7 @@ router.get('/login', (req, res) => {
     }
     res.render('user/login')
 })
-router.post('/login', async (req, res) =>{
+router.post('/login', body(['login', 'password']).escape(), async (req, res) =>{
     let login = req.body.login
     let user = await User.findOne({'login': login}).exec()
     let passwordOK = false
@@ -48,7 +49,7 @@ router.get('/register', (req, res) => {
     }
     res.render('user/register', {user: new User({address: new Address()})})
 })
-router.post('/register', async (req, res) => {
+router.post('/register', body(['login', 'password', 'passwordRepeat', 'name', 'street', 'houseNumber', 'city', 'country', 'postalCode']).escape(), body('email').isEmail().normalizeEmail(), async (req, res) => {
     let user = new User({
         login: req.body.login,
         name: req.body.name,
@@ -61,6 +62,10 @@ router.post('/register', async (req, res) => {
             country: req.body.country
         })
     })
+    if(!validationResult(req).isEmpty()){
+        res.render('user/register', {user: user, errorMessage: validationResult(req).array()[0]['msg']+": "+validationResult(req).array()[0]['param']})
+        return
+    }
     let sameLogin = await User.findOne({'login': user.login}).exec()
     if(sameLogin != null){
         res.render('user/register', {user: user, errorMessage: "User with this login already exists"})
@@ -105,7 +110,13 @@ router.get('/edit', async (req, res) => {
     var user = await User.findById(req.session.loggedUser).exec()
     res.render('user/edit', {user: user})
 })
-router.post('/edit', async (req, res) => {
+router.post('/edit', body(['name', 'street', 'houseNumber', 'city', 'country', 'postalCode']).escape(), body('email').isEmail().normalizeEmail(), async (req, res) => {
+    var user = await User.findById(req.session.loggedUser).exec()
+    if(!validationResult(req).isEmpty()){
+        res.render('user/edit', {user: user, errorMessage: validationResult(req).array()[0]['msg']+": "+validationResult(req).array()[0]['param']})
+        console.log(validationResult(req).array())
+        return
+    }
     let newAddress = Address({
         street: req.body.street,
         houseNumber: req.body.houseNumber,
@@ -132,7 +143,7 @@ router.get('/changePassword', (req, res) => {
     }
     res.render('user/changePassword')
 })
-router.post('/changePassword', async (req, res) => {
+router.post('/changePassword', body(['password', 'passwordRepeat']).escape(), async (req, res) => {
     if(req.body.password != req.body.passwordRepeat){
         res.render('user/changePassword', {errorMessage: "Passwords are not the same"})
         return
