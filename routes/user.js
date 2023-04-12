@@ -117,6 +117,13 @@ router.post('/edit', body(['name', 'street', 'houseNumber', 'city', 'country', '
         console.log(validationResult(req).array())
         return
     }
+    if(user.email != req.body.email){
+        let sameEmail = await User.findOne({'email': req.body.email}).exec()
+        if(sameEmail != null){
+            res.render('user/edit', {user: user, errorMessage: "User with this email already exists"})
+            return
+        }
+    }
     let newAddress = Address({
         street: req.body.street,
         houseNumber: req.body.houseNumber,
