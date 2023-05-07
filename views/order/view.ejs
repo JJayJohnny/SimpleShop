@@ -1,0 +1,29 @@
+<h3>Order info</h3>
+<ul>
+<li>Order ID: <%=order._id%></li>
+<li>Date of order: <%=order.createdAt%></li>
+<li>Status: <b><%=order.status%></b> last updated: <%=order.updatedAt%></li>
+<li>Address:
+    <ul>
+        <li>Street: <%=order.address.street%></li>
+        <li>House number: <%=order.address.houseNumber%></li>
+        <li>City: <%=order.address.city%></li>
+        <li>Postal code: <%=order.address.postalCode%></li>
+        <li>Country: <%=order.address.country%></li>
+    </ul>
+</li>
+</ul>
+<table>
+    <tr>
+        <td>Product</td>
+        <td>Price</td>
+        <td>Quantity</td>
+    </tr>
+    <%order.products.forEach(product => {%>
+        <tr>
+            <td><a href="/products/<%=product.id%>"><%=items.find(item => {return item._id == product.id}).name%></a></td>
+            <td><%=items.find(item => {return item._id == product.id}).price%></td>
+            <td><%=product.quantity%></td>
+        </tr>
+    <%})%>
+</table>

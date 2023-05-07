@@ -64,8 +64,19 @@ router.post('/make', checkSchema(validation.orderSchema), async (req, res) => {
     }
 })
 
-router.get('/:id', (req, res)=>{
-    res.send("Order info page")
+router.get('/:id', async (req, res)=>{
+    try{
+        let order = await Order.findById(req.params.id).exec()
+        let productIDs = []
+        order.products.forEach(product => {
+            productIDs.push(product.id)
+        })
+        let items = await Product.find().where('_id').in(productIDs)
+        res.render('order/view', {order: order, items: items})
+    }
+    catch{
+        res.send("Order with this id does not exist")
+    }
 })
 
 module.exports = router
