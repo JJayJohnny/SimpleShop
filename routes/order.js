@@ -4,7 +4,8 @@ const Order = require('./../models/order')
 const Product = require('./../models/product')
 const Address = require('./../models/user').Address
 const User = require('./../models/user').User
-const {body, validationResult} = require('express-validator')
+const {body, validationResult, checkSchema} = require('express-validator')
+const validation = require('./../validators/order')
 
 router.get('/', (req, res) => {
     res.redirect('/')
@@ -26,7 +27,7 @@ router.get('/make', async (req, res) => {
         res.redirect('/')
     }   
 })
-router.post('/make', body(['name', 'street', 'houseNumber', 'city', 'country', 'postalCode']).escape(), body('email').isEmail().normalizeEmail(), async (req, res) => {
+router.post('/make', checkSchema(validation.orderSchema), async (req, res) => {
     let items = await Product.find().where('_id').in(Object.keys(req.session.cart)).exec()
     let order = new Order({
         status: "Ordered",
