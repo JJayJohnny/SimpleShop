@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('./../models/user').User
 const Address = require('./../models/user').Address
+const Order = require('./../models/order')
 const bcrypt = require('bcrypt')
 const {body, validationResult, checkSchema, check} = require('express-validator')
 const validation = require('./../validators/user')
@@ -13,7 +14,8 @@ router.get('/', async (req, res) => {
         return
     }
     var user = await User.findById(req.session.loggedUser).exec()
-    res.render('user/user', {user: user})
+    let orders = await Order.find({userId: req.session.loggedUser}).exec()
+    res.render('user/user', {user: user, orders: orders})
 })
 
 router.get('/login', (req, res) => {

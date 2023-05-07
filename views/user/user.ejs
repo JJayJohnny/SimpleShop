@@ -1,6 +1,6 @@
 <h1>Hello <%=user.login%>!</h1>
 <div class="accountInfo">
-    <h4>Account info:</h4>
+    <h3>Account info:</h3>
     <a href="/user/changePassword">Change your password</a><br/>
     <label>Name: <%=user.name%></label><br/>
     <label>Email: <%=user.email%></label><br/>
@@ -11,4 +11,20 @@
     <label>Postal code: <%=user.address.postalCode%></label><br/>
     <label>Country: <%=user.address.country%></label><br/>
     <a href="/user/edit">Change your info</a>
+</div>
+<br/>
+<div class="orderList">
+    <h3>Your orders:</h3>
+    <table>
+    <tr>
+        <td>Order ID</td>
+        <td>Ordered on</td>
+    </tr>
+    <% orders.forEach(order => {%>
+        <tr>
+            <td><a href="/order/<%=order._id%>"><%=order._id%></a></td>
+            <td><%=order.createdAt%></td>
+        </tr>
+    <%})%>
+    </table>
 </div>

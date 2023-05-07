@@ -10,4 +10,7 @@
 <div class="cartItem">Total: <%= totalPrice.toFixed(2) %></div>
 <% if(items.length == 0) {%>
     Cart is empty
+<%} else{%>
+    <a href="/order/make">Make order</a>
 <%}%>
+
